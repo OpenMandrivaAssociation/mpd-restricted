@@ -1,7 +1,8 @@
 %define __libtoolize /bin/true
 
 %define name 	mpd
-%define version 0.12.1
+%define version 0.12.2
+%define release %mkrel 1
 
 %define build_plf 0
 %{?_with_plf: %{expand: %%global build_plf 1}}
@@ -13,7 +14,7 @@
 
 Name:			%name
 Version:		%version
-Release:		%mkrel 3
+Release:		%release
 Summary:                MPD, the Music Player Daemon
 License:		GPL
 Group:			Sound
@@ -36,6 +37,7 @@ BuildRequires:	        libmikmod-devel
 BuildRequires:	        libmad-devel
 BuildRequires:	        libid3tag-devel
 BuildRequires:          autoconf2.5
+BuildRequires:		libatomic_ops-devel
 %if %build_plf
 BuildRequires:          libfaad2-devel
 
