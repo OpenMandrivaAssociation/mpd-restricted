@@ -32,6 +32,7 @@ BuildRequires:          libfaad2-devel
 %endif
 BuildRoot:		%{_tmppath}/%{name}-%{version}-buildroot
 
+%if %build_plf
 %description
 Music Player Daemon (MPD) allows remote access for playing music (MP3, Ogg
 Vorbis, FLAC, Mod, and wave files) and managing playlists. MPD is designed
