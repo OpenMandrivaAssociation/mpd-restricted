@@ -1,9 +1,3 @@
-%define __libtoolize /bin/true
-
-%define name 	mpd
-%define version 0.12.2
-%define release %mkrel 1
-
 %define build_plf 0
 %{?_with_plf: %{expand: %%global build_plf 1}}
 
@@ -11,19 +5,15 @@
 %define distsuffix plf
 %endif
 
-
-Name:			%name
-Version:		%version
-Release:		%release
-Summary:                MPD, the Music Player Daemon
+Summary:		MPD, the Music Player Daemon
+Name:			mpd
+Version:		0.13.0
+Release:		%mkrel 1
 License:		GPL
 Group:			Sound
 URL:			http://www.musicpd.org/
-Source:			http://mercury.chem.pitt.edu/~shank/%{name}-%{version}.tar.bz2
+Source:			http://www.musicpd.org/uploads/files/%{name}-%{version}.tar.bz2
 Source1:		%{name}-service.tar.bz2
-Patch1:                 %{name}-0.12.1-configure-faad.patch
-Patch2:			mpd-0.12.1-flac-1.1.4-support.patch
-BuildRoot:		%{_tmppath}/%{name}-%{version}-buildroot
 Requires(pre):		rpm-helper
 Requires(post):         rpm-helper
 Requires(preun):        rpm-helper
@@ -36,10 +26,11 @@ BuildRequires:	        libaudiofile-devel
 BuildRequires:	        libmikmod-devel
 BuildRequires:	        libmad-devel
 BuildRequires:	        libid3tag-devel
-BuildRequires:          autoconf2.5
 BuildRequires:		libatomic_ops-devel
 %if %build_plf
 BuildRequires:          libfaad2-devel
+%endif
+BuildRoot:		%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
 Music Player Daemon (MPD) allows remote access for playing music (MP3, Ogg
@@ -60,43 +51,39 @@ especially if your a console junkie, like frontend options, or restart X often.
 
 %prep
 %setup -q
-%patch1 -p0
-%patch2 -p1 -b .newflac
-autoconf
 
 %build
 %if %build_plf
-%configure
+%configure2_5x --enable-ao
 %else
-%configure --disable-aac
+%configure2_5x --disable-aac --enable-ao
 %endif
 %make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-%makeinstall
+rm -rf %{buildroot}
+%makeinstall_std
 
-mkdir -p $RPM_BUILD_ROOT/var/lib/mpd
-touch $RPM_BUILD_ROOT/%{_localstatedir}/mpd/mpd.db
-touch $RPM_BUILD_ROOT/%{_localstatedir}/mpd/mpdstate
-mkdir -p $RPM_BUILD_ROOT/var/log/mpd
-touch $RPM_BUILD_ROOT/var/log/mpd/mpd.log
-touch $RPM_BUILD_ROOT/var/log/mpd/mpd.error
+mkdir -p %{buildroot}/var/lib/mpd
+touch %{buildroot}/%{_localstatedir}/mpd/mpd.db
+touch %{buildroot}/%{_localstatedir}/mpd/mpdstate
+mkdir -p %{buildroot}/var/log/mpd
+touch %{buildroot}/var/log/mpd/mpd.log
+touch %{buildroot}/var/log/mpd/mpd.error
 
 tar xjf %{SOURCE1} -C $RPM_BUILD_DIR/%{name}-%{version}
-install -D mpd.conf $RPM_BUILD_ROOT/etc/mpd.conf
-install -D mpd.init $RPM_BUILD_ROOT/%{_initrddir}/%name
-install -D -m 644 mpd.logrotate $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/%name
+install -D mpd.conf %{buildroot}/etc/mpd.conf
+install -D mpd.init %{buildroot}/%{_initrddir}/%name
+install -D -m 644 mpd.logrotate %{buildroot}%{_sysconfdir}/logrotate.d/%name
 
-rm -rf $RPM_BUILD_ROOT/%{_docdir}/mpd
+rm -rf %{buildroot}/%{_docdir}/mpd
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %pre
 %_pre_useradd %name %{_localstatedir}/%{name} /bin/false
-usermod -g audio %name
-
+usermod -g audio %{name}
 
 %post
 if [ $1 -eq 1 ]
@@ -108,24 +95,23 @@ then
 fi
 #echo If you want to run mpd as a service, please read
 #echo /usr/share/doc/mpd-%{version}/README.MDK
-%_post_service %name
+%_post_service %{name}
 
 %preun
-%_preun_service %name
+%_preun_service %{name}
 
 %postun
-%_postun_userdel %name
+%_postun_userdel %{name}
 
 %files
 %defattr(-,root,root)
 %doc README UPGRADING doc/COMMANDS AUTHORS COPYING ChangeLog doc/mpdconf.example README.install.urpmi
-%{_bindir}/%name
+%{_bindir}/%{name}
 %{_mandir}/man1/*
 %{_mandir}/man5/*
-%config(noreplace) %{_sysconfdir}/logrotate.d/%name
-%attr(-,mpd,root) %config(noreplace) %{_sysconfdir}/%name.conf
-%config(noreplace) %{_initrddir}/%name
-
+%config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
+%attr(-,mpd,root) %config(noreplace) %{_sysconfdir}/%{name}.conf
+%config(noreplace) %{_initrddir}/%{name}
 %defattr(644,mpd,audio)
 %attr(755,mpd,audio) %dir %{_localstatedir}/mpd
 %ghost %{_localstatedir}/mpd/mpd.db
@@ -133,5 +119,3 @@ fi
 %attr(755,mpd,audio) %dir /var/log/mpd
 %ghost /var/log/mpd/mpd.log
 %ghost /var/log/mpd/mpd.error
-
-
