@@ -8,17 +8,21 @@
 Summary:		MPD, the Music Player Daemon
 Name:			mpd
 Version:		0.13.0
-Release:		%mkrel 1
+Release:		%mkrel 2
 License:		GPL
 Group:			Sound
 URL:			http://www.musicpd.org/
 Source:			http://www.musicpd.org/uploads/files/%{name}-%{version}.tar.bz2
-Source1:		%{name}-service.tar.bz2
+Source1:		%{name}.conf
+Source2:		%{name}.init
+Source3:		%{name}.logrotate
+Source4:		README.urpmi
 Requires(pre):		rpm-helper
 Requires(post):         rpm-helper
 Requires(preun):        rpm-helper
 Requires(postun):       rpm-helper
-BuildRequires:	        libao-devel
+BuildRequires:		libalsa-devel
+BuildRequires:		libavahi-common-devel
 BuildRequires:	        libogg-devel
 BuildRequires:	        libvorbis-devel
 BuildRequires:	        libflac-devel libflac++-devel
@@ -55,9 +59,9 @@ especially if your a console junkie, like frontend options, or restart X often.
 
 %build
 %if %build_plf
-%configure2_5x --enable-ao
+%configure2_5x --with-alsa-prefix=%{_prefix}
 %else
-%configure2_5x --disable-aac --enable-ao
+%configure2_5x --disable-aac --with-alsa-prefix=%{_prefix}
 %endif
 %make
 
@@ -72,11 +76,10 @@ mkdir -p %{buildroot}/var/log/mpd
 touch %{buildroot}/var/log/mpd/mpd.log
 touch %{buildroot}/var/log/mpd/mpd.error
 
-tar xjf %{SOURCE1} -C $RPM_BUILD_DIR/%{name}-%{version}
-install -D mpd.conf %{buildroot}/etc/mpd.conf
-install -D mpd.init %{buildroot}/%{_initrddir}/%name
-install -D -m 644 mpd.logrotate %{buildroot}%{_sysconfdir}/logrotate.d/%name
-
+install -D %{SOURCE1} %{buildroot}/etc/mpd.conf
+install -D %{SOURCE2} %{buildroot}/%{_initrddir}/%{name}
+install -D -m 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
+install %{SOURCE4} doc/README.urpmi
 rm -rf %{buildroot}/%{_docdir}/mpd
 
 %clean
@@ -106,7 +109,7 @@ fi
 
 %files
 %defattr(-,root,root)
-%doc README UPGRADING doc/COMMANDS AUTHORS COPYING ChangeLog doc/mpdconf.example README.install.urpmi
+%doc README UPGRADING doc/COMMANDS AUTHORS COPYING ChangeLog doc/mpdconf.example doc/*.urpmi
 %{_bindir}/%{name}
 %{_mandir}/man1/*
 %{_mandir}/man5/*
