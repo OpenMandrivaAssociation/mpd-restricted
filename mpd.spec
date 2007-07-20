@@ -8,7 +8,7 @@
 Summary:		MPD, the Music Player Daemon
 Name:			mpd
 Version:		0.13.0
-Release:		%mkrel 2
+Release:		%mkrel 3
 License:		GPL
 Group:			Sound
 URL:			http://www.musicpd.org/
@@ -31,6 +31,11 @@ BuildRequires:	        libmikmod-devel
 BuildRequires:	        libmad-devel
 BuildRequires:	        libid3tag-devel
 BuildRequires:		libatomic_ops-devel
+BuildRequires:		libshout-devel
+BuildRequires:          libjack-devel
+BuildRequires:          libao-devel
+BuildRequires:          libpulseaudio-devel
+BuildRequires:          libmpcdec-devel
 %if %build_plf
 BuildRequires:          libfaad2-devel
 %endif
@@ -75,6 +80,9 @@ touch %{buildroot}/%{_localstatedir}/mpd/mpdstate
 mkdir -p %{buildroot}/var/log/mpd
 touch %{buildroot}/var/log/mpd/mpd.log
 touch %{buildroot}/var/log/mpd/mpd.error
+mkdir -p %{buildroot}/var/run/mpd
+mkdir -p %{buildroot}/%{_localstatedir}/mpd/playlists
+mkdir -p %{buildroot}/%{_localstatedir}/mpd/music
 
 install -D %{SOURCE1} %{buildroot}/etc/mpd.conf
 install -D %{SOURCE2} %{buildroot}/%{_initrddir}/%{name}
@@ -96,6 +104,7 @@ then
 %create_ghostfile %{_localstatedir}/mpd/mpdstate mpd audio 644
 %create_ghostfile /var/log/mpd/mpd.log mpd audio 644
 %create_ghostfile /var/log/mpd/mpd.error mpd audio 644
+service %{name} createdb
 fi
 #echo If you want to run mpd as a service, please read
 #echo /usr/share/doc/mpd-%{version}/README.MDK
@@ -118,8 +127,11 @@ fi
 %config(noreplace) %{_initrddir}/%{name}
 %defattr(644,mpd,audio)
 %attr(755,mpd,audio) %dir %{_localstatedir}/mpd
+%attr(755,mpd,audio) %dir %{_localstatedir}/mpd/music
+%attr(755,mpd,audio) %dir %{_localstatedir}/mpd/playlists
 %ghost %{_localstatedir}/mpd/mpd.db
 %ghost %{_localstatedir}/mpd/mpdstate
 %attr(755,mpd,audio) %dir /var/log/mpd
+%attr(755,mpd,audio) %dir /var/run/mpd
 %ghost /var/log/mpd/mpd.log
 %ghost /var/log/mpd/mpd.error
