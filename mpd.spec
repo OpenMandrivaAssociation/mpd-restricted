@@ -8,7 +8,7 @@
 Summary:		MPD, the Music Player Daemon
 Name:			mpd
 Version:		0.13.0
-Release:		%mkrel 4
+Release:		%mkrel 5
 License:		GPL
 Group:			Sound
 URL:			http://www.musicpd.org/
@@ -64,9 +64,9 @@ especially if your a console junkie, like frontend options, or restart X often.
 
 %build
 %if %build_plf
-%configure2_5x --with-alsa-prefix=%{_prefix}
+%configure2_5x --with-alsa-prefix=%{_prefix} --enable-ao
 %else
-%configure2_5x --disable-aac --with-alsa-prefix=%{_prefix}
+%configure2_5x --disable-aac --with-alsa-prefix=%{_prefix} --enable-ao
 %endif
 %make
 
