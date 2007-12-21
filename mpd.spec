@@ -39,6 +39,7 @@ BuildRequires:          libmpcdec-devel
 %if %build_plf
 BuildRequires:          libfaad2-devel
 %endif
+BuildRoot:		%{_tmppath}/%{name}-%{version}-buildroot
 
 %if %build_plf
 %description
