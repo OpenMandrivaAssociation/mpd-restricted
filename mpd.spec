@@ -8,7 +8,7 @@
 Summary:		MPD, the Music Player Daemon
 Name:			mpd
 Version:		0.13.1
-Release:		%mkrel 1
+Release:		%mkrel 2
 License:		GPLv2+
 Group:			Sound
 URL:			http://www.musicpd.org/
@@ -41,22 +41,15 @@ BuildRequires:          libfaad2-devel
 %endif
 BuildRoot:		%{_tmppath}/%{name}-%{version}-buildroot
 
+%description
+Music Player Daemon (MPD) allows remote access for playing music (MP3, Ogg
+Vorbis, FLAC, Mod, and wave files) and managing playlists. MPD is designed
+for integrating a computer into a stereo system that provides control for music
+playback over a local network. It is also makes a great desktop music player,
+especially if your a console junkie, like frontend options, or restart X often.
 %if %build_plf
-%description
-Music Player Daemon (MPD) allows remote access for playing music (MP3, Ogg
-Vorbis, FLAC, Mod, and wave files) and managing playlists. MPD is designed
-for integrating a computer into a stereo system that provides control for music
-playback over a local network. It is also makes a great desktop music player,
-especially if your a console junkie, like frontend options, or restart X often.
-This plf version of MPD add AAC files support by using libfaad2_0.
-
-%else
-%description
-Music Player Daemon (MPD) allows remote access for playing music (MP3, Ogg
-Vorbis, FLAC, Mod, and wave files) and managing playlists. MPD is designed
-for integrating a computer into a stereo system that provides control for music
-playback over a local network. It is also makes a great desktop music player,
-especially if your a console junkie, like frontend options, or restart X often.
+This package is in PLF because it is built with AAC support of libfaad2,
+which is in PLF.
 %endif
 
 %prep
