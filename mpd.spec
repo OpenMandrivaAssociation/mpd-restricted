@@ -68,14 +68,14 @@ rm -rf %{buildroot}
 %makeinstall_std
 
 mkdir -p %{buildroot}/var/lib/mpd
-touch %{buildroot}/%{_localstatedir}/mpd/mpd.db
-touch %{buildroot}/%{_localstatedir}/mpd/mpdstate
+touch %{buildroot}/%{_localstatedir}/lib/mpd/mpd.db
+touch %{buildroot}/%{_localstatedir}/lib/mpd/mpdstate
 mkdir -p %{buildroot}/var/log/mpd
 touch %{buildroot}/var/log/mpd/mpd.log
 touch %{buildroot}/var/log/mpd/mpd.error
 mkdir -p %{buildroot}/var/run/mpd
-mkdir -p %{buildroot}/%{_localstatedir}/mpd/playlists
-mkdir -p %{buildroot}/%{_localstatedir}/mpd/music
+mkdir -p %{buildroot}/%{_localstatedir}/lib/mpd/playlists
+mkdir -p %{buildroot}/%{_localstatedir}/lib/mpd/music
 
 install -D %{SOURCE1} %{buildroot}/etc/mpd.conf
 install -D %{SOURCE2} %{buildroot}/%{_initrddir}/%{name}
@@ -87,14 +87,14 @@ rm -rf %{buildroot}/%{_docdir}/mpd
 rm -rf %{buildroot}
 
 %pre
-%_pre_useradd %name %{_localstatedir}/%{name} /bin/false
+%_pre_useradd %name %{_localstatedir}/lib/%{name} /bin/false
 usermod -g audio %{name}
 
 %post
 if [ $1 -eq 1 ]
 then
-%create_ghostfile %{_localstatedir}/mpd/mpd.db mpd audio 644
-%create_ghostfile %{_localstatedir}/mpd/mpdstate mpd audio 644
+%create_ghostfile %{_localstatedir}/lib/mpd/mpd.db mpd audio 644
+%create_ghostfile %{_localstatedir}/lib/mpd/mpdstate mpd audio 644
 %create_ghostfile /var/log/mpd/mpd.log mpd audio 644
 %create_ghostfile /var/log/mpd/mpd.error mpd audio 644
 service %{name} createdb
@@ -119,11 +119,11 @@ fi
 %attr(-,mpd,root) %config(noreplace) %{_sysconfdir}/%{name}.conf
 %config(noreplace) %{_initrddir}/%{name}
 %defattr(644,mpd,audio)
-%attr(755,mpd,audio) %dir %{_localstatedir}/mpd
-%attr(755,mpd,audio) %dir %{_localstatedir}/mpd/music
-%attr(755,mpd,audio) %dir %{_localstatedir}/mpd/playlists
-%ghost %{_localstatedir}/mpd/mpd.db
-%ghost %{_localstatedir}/mpd/mpdstate
+%attr(755,mpd,audio) %dir %{_localstatedir}/lib/mpd
+%attr(755,mpd,audio) %dir %{_localstatedir}/lib/mpd/music
+%attr(755,mpd,audio) %dir %{_localstatedir}/lib/mpd/playlists
+%ghost %{_localstatedir}/lib/mpd/mpd.db
+%ghost %{_localstatedir}/lib/mpd/mpdstate
 %attr(755,mpd,audio) %dir /var/log/mpd
 %attr(755,mpd,audio) %dir /var/run/mpd
 %ghost /var/log/mpd/mpd.log
