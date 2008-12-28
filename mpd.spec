@@ -7,12 +7,12 @@
 
 Summary:		MPD, the Music Player Daemon
 Name:			mpd
-Version:		0.13.2
-Release:		%mkrel 2
+Version:		0.14
+Release:		%mkrel 1
 License:		GPLv2+
 Group:			Sound
 URL:			http://www.musicpd.org/
-Source:			http://www.musicpd.org/uploads/files/%{name}-%{version}.tar.bz2
+Source:			http://downloads.sourceforge.net/musicpd/%{name}-%{version}.tar.bz2
 Source1:		%{name}.conf
 Source2:		%{name}.init
 Source3:		%{name}.logrotate
@@ -111,7 +111,7 @@ fi
 
 %files
 %defattr(-,root,root)
-%doc README UPGRADING doc/COMMANDS AUTHORS COPYING ChangeLog doc/mpdconf.example doc/*.urpmi
+%doc README UPGRADING AUTHORS NEWS doc/mpdconf.example doc/*.urpmi
 %{_bindir}/%{name}
 %{_mandir}/man1/*
 %{_mandir}/man5/*
