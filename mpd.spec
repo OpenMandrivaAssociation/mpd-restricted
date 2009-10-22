@@ -28,6 +28,7 @@ BuildRequires:      libao-devel
 BuildRequires:		libatomic_ops-devel
 BuildRequires:	    libaudiofile-devel
 BuildRequires:		libavahi-common-devel
+BuildRequires:		libcurl-devel
 BuildRequires:	    libflac-devel libflac++-devel
 BuildRequires:	    libid3tag-devel
 BuildRequires:      libjack-devel
@@ -59,9 +60,9 @@ which is in PLF.
 
 %build
 %if %build_plf
-%configure2_5x --with-alsa-prefix=%{_prefix} --enable-ao
+%configure2_5x --with-alsa-prefix=%{_prefix} --enable-ao --enable-curl
 %else
-%configure2_5x --disable-aac --with-alsa-prefix=%{_prefix} --enable-ao
+%configure2_5x --disable-aac --with-alsa-prefix=%{_prefix} --enable-ao --enable-curl
 %endif
 %make
 
