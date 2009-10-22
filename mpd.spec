@@ -5,41 +5,43 @@
 %define distsuffix plf
 %endif
 
-Summary:		MPD, the Music Player Daemon
 Name:			mpd
 Version:		0.15.3
 Release:		%mkrel 1
+
+Summary:		MPD, the Music Player Daemon
 License:		GPLv2+
 Group:			Sound
-URL:			http://www.musicpd.org/
-Source:			http://downloads.sourceforge.net/musicpd/%{name}-%{version}.tar.bz2
+Url:			http://www.musicpd.org/
+Source0:		http://downloads.sourceforge.net/musicpd/%{name}-%{version}.tar.bz2
 Source1:		%{name}.conf
 Source2:		%{name}.init
 Source3:		%{name}.logrotate
 Source4:		README.urpmi
+
 Requires(pre):		rpm-helper
-Requires(post):         rpm-helper
-Requires(preun):        rpm-helper
-Requires(postun):       rpm-helper
+Requires(post):     rpm-helper
+Requires(preun):    rpm-helper
+Requires(postun):   rpm-helper
 BuildRequires:		libalsa-devel
-BuildRequires:		libavahi-common-devel
-BuildRequires:	        libogg-devel
-BuildRequires:	        libvorbis-devel
-BuildRequires:	        libflac-devel libflac++-devel
-BuildRequires:	        libaudiofile-devel
-BuildRequires:	        libmikmod-devel
-BuildRequires:	        libmad-devel
-BuildRequires:	        libid3tag-devel
+BuildRequires:      libao-devel
 BuildRequires:		libatomic_ops-devel
+BuildRequires:	    libaudiofile-devel
+BuildRequires:		libavahi-common-devel
+BuildRequires:	    libflac-devel libflac++-devel
+BuildRequires:	    libid3tag-devel
+BuildRequires:      libjack-devel
+BuildRequires:	    libmad-devel
+BuildRequires:	    libmikmod-devel
+BuildRequires:      libmpcdec-devel
+BuildRequires:	    libogg-devel
+BuildRequires:      libpulseaudio-devel
 BuildRequires:		libshout-devel
-BuildRequires:          libjack-devel
-BuildRequires:          libao-devel
-BuildRequires:          libpulseaudio-devel
-BuildRequires:          libmpcdec-devel
+BuildRequires:	    libvorbis-devel
 %if %build_plf
-BuildRequires:          libfaad2-devel
+BuildRequires:      libfaad2-devel
 %endif
-BuildRoot:		%{_tmppath}/%{name}-%{version}-buildroot
+BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}
 
 %description
 Music Player Daemon (MPD) allows remote access for playing music (MP3, Ogg
