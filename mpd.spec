@@ -6,7 +6,7 @@
 %endif
 
 Name:			mpd
-Version:		0.15.6
+Version:		0.15.7
 Release:		%mkrel 1
 
 Summary:		MPD, the Music Player Daemon
