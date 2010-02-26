@@ -7,7 +7,7 @@
 
 Name:			mpd
 Version:		0.15.8
-Release:		%mkrel 1
+Release:		%mkrel 2
 
 Summary:		MPD, the Music Player Daemon
 License:		GPLv2+
@@ -39,6 +39,7 @@ BuildRequires:	    libogg-devel
 BuildRequires:      libpulseaudio-devel
 BuildRequires:		libshout-devel
 BuildRequires:	    libvorbis-devel
+BuildRequires:	    sqlite3-devel
 %if %build_plf
 BuildRequires:      libfaad2-devel
 %endif
@@ -60,9 +61,9 @@ which is in PLF.
 
 %build
 %if %build_plf
-%configure2_5x --with-alsa-prefix=%{_prefix} --enable-ao --enable-curl
+%configure2_5x --with-alsa-prefix=%{_prefix} --enable-ao --enable-curl --enable-sqlite
 %else
-%configure2_5x --disable-aac --with-alsa-prefix=%{_prefix} --enable-ao --enable-curl
+%configure2_5x --with-alsa-prefix=%{_prefix} --enable-ao --enable-curl --enable-sqlite --disable-aac
 %endif
 %make
 
