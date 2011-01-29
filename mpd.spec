@@ -7,7 +7,7 @@
 
 Name:			mpd
 Version:		0.15.13
-Release:		%mkrel 1
+Release:		%mkrel 2
 
 Summary:		MPD, the Music Player Daemon
 License:		GPLv2+
@@ -18,6 +18,7 @@ Source1:		%{name}.conf
 Source2:		%{name}.init
 Source3:		%{name}.logrotate
 Source4:		README.urpmi
+Source5:		%{name}.service
 
 Requires(pre):		rpm-helper
 Requires(post):     rpm-helper
@@ -80,12 +81,15 @@ touch %{buildroot}/var/log/mpd/mpd.error
 mkdir -p %{buildroot}/var/run/mpd
 mkdir -p %{buildroot}/%{_localstatedir}/lib/mpd/playlists
 mkdir -p %{buildroot}/%{_localstatedir}/lib/mpd/music
+mkdir -p %{buildroot}/lib/systemd/system
 
 install -D %{SOURCE1} %{buildroot}/etc/mpd.conf
 install -D %{SOURCE2} %{buildroot}/%{_initrddir}/%{name}
 install -D -m 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 install %{SOURCE4} doc/README.urpmi
 rm -rf %{buildroot}/%{_docdir}/mpd
+
+install -D %{SOURCE5} %{buildroot}/lib/systemd/system/
 
 %clean
 rm -rf %{buildroot}
@@ -132,3 +136,4 @@ fi
 %attr(755,mpd,audio) %dir /var/run/mpd
 %ghost /var/log/mpd/mpd.log
 %ghost /var/log/mpd/mpd.error
+%attr(644,root,root) /lib/systemd/system/%{name}.service
