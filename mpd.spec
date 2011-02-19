@@ -3,11 +3,15 @@
 
 %if %build_plf  
 %define distsuffix plf
+%if %mdvver >= 201100
+# make EVR of plf build higher than regular to allow update, needed with rpm5 mkrel
+%define extrarelsuffix plf
+%endif
 %endif
 
 Name:			mpd
 Version:		0.15.13
-Release:		%mkrel 2
+Release:		%mkrel 2%{?extrarelsuffix}
 
 Summary:		MPD, the Music Player Daemon
 License:		GPLv2+
