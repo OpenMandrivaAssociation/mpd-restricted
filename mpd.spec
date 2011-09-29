@@ -11,7 +11,7 @@
 
 Name:			mpd
 Version:		0.16.4
-Release:		1
+Release:		2
 Summary:		MPD, the Music Player Daemon
 License:		GPLv2+
 Group:			Sound
