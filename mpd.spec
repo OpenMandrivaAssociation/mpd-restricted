@@ -10,18 +10,19 @@
 %endif
 
 Name:			mpd
-Version:		0.16.3
-Release:		%mkrel 1
+Version:		0.16.4
+Release:		1
 Summary:		MPD, the Music Player Daemon
 License:		GPLv2+
 Group:			Sound
-Url:			http://www.musicpd.org/
+Url:			http://mpd.wikia.com/
 Source0:		http://downloads.sourceforge.net/musicpd/%{name}-%{version}.tar.gz
 Source1:		%{name}.conf
 Source2:		%{name}.init
 Source3:		%{name}.logrotate
 Source4:		README.urpmi
 Source5:		%{name}.service
+Patch0:			mpd-0.16.4-missing-headers.patch
 
 Requires(pre):		rpm-helper
 Requires(post):     rpm-helper
@@ -62,6 +63,7 @@ which is in PLF.
 
 %prep
 %setup -q
+%patch0 -p1 -b .missing-headers~
 
 %build
 %if %build_plf
@@ -108,7 +110,6 @@ then
 %create_ghostfile %{_localstatedir}/lib/mpd/mpdstate mpd audio 644
 %create_ghostfile /var/log/mpd/mpd.log mpd audio 644
 %create_ghostfile /var/log/mpd/mpd.error mpd audio 644
-service %{name} createdb
 fi
 #echo If you want to run mpd as a service, please read
 #echo /usr/share/doc/mpd-%{version}/README.MDK
