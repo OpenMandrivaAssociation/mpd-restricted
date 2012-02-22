@@ -10,7 +10,7 @@
 %endif
 
 Name:			mpd
-Version:		0.16.6
+Version:		0.16.7
 Release:		2
 Summary:		MPD, the Music Player Daemon
 License:		GPLv2+
@@ -36,7 +36,7 @@ BuildRequires:		libavahi-common-devel
 BuildRequires:		libcurl-devel
 BuildRequires:	    libflac-devel libflac++-devel
 BuildRequires:	    libid3tag-devel
-BuildRequires:      libjack-devel
+BuildRequires:      pkgconfig(jack)
 BuildRequires:	    libmad-devel
 BuildRequires:	    libmikmod-devel
 BuildRequires:      libmpcdec-devel
