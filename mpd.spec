@@ -10,8 +10,8 @@
 %endif
 
 Name:			mpd
-Version:		0.16.7
-Release:		2
+Version:		0.16.8
+Release:		1
 Summary:		MPD, the Music Player Daemon
 License:		GPLv2+
 Group:			Sound
@@ -41,14 +41,13 @@ BuildRequires:	    libmad-devel
 BuildRequires:	    libmikmod-devel
 BuildRequires:      libmpcdec-devel
 BuildRequires:	    libogg-devel
-BuildRequires:      libpulseaudio-devel
+BuildRequires:      pulseaudio-devel
 BuildRequires:		libshout-devel
 BuildRequires:	    libvorbis-devel
 BuildRequires:	    sqlite3-devel
 %if %build_plf
 BuildRequires:      libfaad2-devel
 %endif
-BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}
 
 %description
 Music Player Daemon (MPD) allows remote access for playing music (MP3, Ogg
@@ -95,9 +94,6 @@ install %{SOURCE4} doc/README.urpmi
 rm -rf %{buildroot}/%{_docdir}/mpd
 
 install -D %{SOURCE5} %{buildroot}/lib/systemd/system/
-
-%clean
-rm -rf %{buildroot}
 
 %pre
 %_pre_useradd %name %{_localstatedir}/lib/%{name} /bin/false
