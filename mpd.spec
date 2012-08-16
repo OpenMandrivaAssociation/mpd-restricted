@@ -10,7 +10,7 @@
 %endif
 
 Name:			mpd
-Version:		0.16.8
+Version:		0.17.1
 Release:		1
 Summary:		MPD, the Music Player Daemon
 License:		GPLv2+
@@ -62,7 +62,7 @@ which is in PLF.
 
 %prep
 %setup -q
-%patch0 -p1 -b .missing-headers~
+#%patch0 -p1 -b .missing-headers~
 
 %build
 %if %build_plf
