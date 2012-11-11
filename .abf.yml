@@ -1,0 +1,7 @@
+sources:
+  "mpd-0.17.2.tar.gz:"	d12802cfb7b3cec839cbe1ad39f7c1533feaf171
+  "mpd.conf:"	fc98eaf3ba8c332dedba3c80b67dd0453c6acc91
+  "mpd.init:"	5f6fcfb1e698ba5ca1a6cb27516713118ad946f6
+  "mpd.logrotate:"	0124817b8272606df8356c3f8a5dcae9d343f2b6
+  "mpd.service:"	5c47bb741dd3c7faa00fcd82e70b72113da1ca0d
+  "README.urpmi:"	2bfb4031874f24b886903f85fbdb388fd0ff8a7b
