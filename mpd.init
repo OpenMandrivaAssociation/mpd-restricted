@@ -1,0 +1,76 @@
+#!/bin/bash
+#
+# mpd:			Starts and stop the Music Player Daemon
+#
+# chkconfig: 345 83 17
+# description: Starts and stop the Music Player Daemon
+#
+# processname: mpd
+# config: /etc/mpd.conf
+### BEGIN INIT INFO
+# Provides: mpd
+# Should-Start: $network sound
+# Default-Start: 3 5
+# Description: Launch Music Player Daemon
+### END INIT INFO
+
+# Source function library
+. /etc/rc.d/init.d/functions
+
+# See how we were called.
+case "$1" in
+  start)
+        if [ ! -f /var/lock/subsys/mpd ]
+        then
+                echo -n "Starting MPD: "
+                daemon mpd
+				RETVAL=$?
+				
+                echo
+                [ $RETVAL -eq 0 ] && touch /var/lock/subsys/mpd
+        else
+                echo -n "MPD already running"
+                echo
+                exit 1
+        fi
+        ;;
+  stop)
+        if [ -f /var/lock/subsys/mpd ]
+        then
+                echo -n "Stopping MPD: "
+                killproc mpd
+				RETVAL=$?
+				
+				echo
+				[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/mpd
+        else
+                echo -n "MPD not running"
+                echo
+                exit 7
+        fi
+        ;;
+  status)
+        status mpd
+        ;;
+  createdb)
+  		echo "Please run mpc update"
+		exit 1
+		;;
+  reload)
+  		;;
+  restart)
+        if [ -f /var/lock/subsys/mpd ]
+        then
+                $0 stop
+                $0 start
+        else
+                echo -n "MPD not in use"
+				echo
+        fi
+        ;;
+  *)
+        echo "Usage: mpd {start|stop|status|restart}"
+        exit 1
+esac
+
+exit $?

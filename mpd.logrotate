@@ -1,0 +1,12 @@
+/var/log/mpd/mpd.log /var/log/mpd/mpd.error {
+	notifempty
+	monthly
+	compress
+	create 644 mpd audio
+	rotate 1
+	nomail
+	sharedscripts
+	postrotate
+		/sbin/service mpd restart
+	endscript
+}

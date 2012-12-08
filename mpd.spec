@@ -1,52 +1,54 @@
+#####################
+# Hardcode PLF build
 %define build_plf 0
+#####################
+
 %{?_with_plf: %{expand: %%global build_plf 1}}
 
-%if %build_plf  
+%if %{build_plf}
 %define distsuffix plf
-%if %mdvver >= 201100
 # make EVR of plf build higher than regular to allow update, needed with rpm5 mkrel
 %define extrarelsuffix plf
 %endif
-%endif
 
-Name:			mpd
-Version:		0.17.2
-Release:		1
-Summary:		MPD, the Music Player Daemon
-License:		GPLv2+
-Group:			Sound
-Url:			http://mpd.wikia.com/
-Source0:		http://downloads.sourceforge.net/musicpd/%{name}-%{version}.tar.gz
-Source1:		%{name}.conf
-Source2:		%{name}.init
-Source3:		%{name}.logrotate
-Source4:		README.urpmi
-Source5:		%{name}.service
-Patch0:			mpd-0.16.4-missing-headers.patch
+Name:		mpd
+Version:	0.17.2
+Release:	1
+Summary:	MPD, the Music Player Daemon
+License:	GPLv2+
+Group:		Sound
+Url:		http://mpd.wikia.com/
+Source0:	http://downloads.sourceforge.net/musicpd/%{name}-%{version}.tar.gz
+Source1:	%{name}.conf
+Source2:	%{name}.init
+Source3:	%{name}.logrotate
+Source4:	README.urpmi
+Source5:	%{name}.service
 
 Requires(pre):		rpm-helper
-Requires(post):     rpm-helper
-Requires(preun):    rpm-helper
-Requires(postun):   rpm-helper
-BuildRequires:		libalsa-devel
-BuildRequires:      libao-devel
-BuildRequires:		libatomic_ops-devel
-BuildRequires:	    libaudiofile-devel
-BuildRequires:		libavahi-common-devel
-BuildRequires:		libcurl-devel
-BuildRequires:	    libflac-devel libflac++-devel
-BuildRequires:	    libid3tag-devel
-BuildRequires:      pkgconfig(jack)
-BuildRequires:	    libmad-devel
-BuildRequires:	    libmikmod-devel
-BuildRequires:      libmpcdec-devel
-BuildRequires:	    libogg-devel
-BuildRequires:      pulseaudio-devel
-BuildRequires:		libshout-devel
-BuildRequires:	    libvorbis-devel
-BuildRequires:	    sqlite3-devel
-%if %build_plf
-BuildRequires:      libfaad2-devel
+Requires(post):		rpm-helper
+Requires(preun):	rpm-helper
+Requires(postun):	rpm-helper
+BuildRequires:	pkgconfig(alsa)
+BuildRequires:	pkgconfig(ao)
+BuildRequires:	libatomic_ops-devel
+BuildRequires:	pkgconfig(audiofile)
+BuildRequires:	avahi-common-devel
+BuildRequires:	pkgconfig(libcurl)
+BuildRequires:	pkgconfig(flac)
+BuildRequires:	pkgconfig(flac++)
+BuildRequires:	pkgconfig(id3tag)
+BuildRequires:	pkgconfig(jack)
+BuildRequires:	pkgconfig(mad)
+BuildRequires:	libmikmod-devel
+BuildRequires:	libmpcdec-devel
+BuildRequires:	pkgconfig(ogg)
+BuildRequires:	pkgconfig(libpulse)
+BuildRequires:	pkgconfig(shout)
+BuildRequires:	pkgconfig(vorbis)
+BuildRequires:	pkgconfig(sqlite3)
+%if %{build_plf}
+BuildRequires:	libfaad2-devel
 %endif
 
 %description
@@ -55,25 +57,27 @@ Vorbis, FLAC, Mod, and wave files) and managing playlists. MPD is designed
 for integrating a computer into a stereo system that provides control for music
 playback over a local network. It is also makes a great desktop music player,
 especially if your a console junkie, like frontend options, or restart X often.
-%if %build_plf
-This package is in PLF because it is built with AAC support of libfaad2,
-which is in PLF.
+
+%if %{build_plf}
+This package is in restricted repository because it is built with AAC support
+of libfaad2, which is patent-protected.
 %endif
 
 %prep
 %setup -q
-#%patch0 -p1 -b .missing-headers~
 
 %build
-%if %build_plf
-%configure2_5x --with-alsa-prefix=%{_prefix} --enable-ao --enable-curl --enable-sqlite
-%else
-%configure2_5x --with-alsa-prefix=%{_prefix} --enable-ao --enable-curl --enable-sqlite --disable-aac
+%configure2_5x \
+	--with-alsa-prefix=%{_prefix} \
+	--enable-ao \
+	--enable-curl \
+%if ! %{build_plf}
+	--disable-aac \
 %endif
+	--enable-sqlite
 %make
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std
 
 mkdir -p %{buildroot}/var/lib/mpd
@@ -96,7 +100,7 @@ rm -rf %{buildroot}/%{_docdir}/mpd
 install -D %{SOURCE5} %{buildroot}/lib/systemd/system/
 
 %pre
-%_pre_useradd %name %{_localstatedir}/lib/%{name} /bin/false
+%_pre_useradd %{name} %{_localstatedir}/lib/%{name} /bin/false
 usermod -g audio %{name}
 
 %post
@@ -118,7 +122,6 @@ fi
 %_postun_userdel %{name}
 
 %files
-%defattr(-,root,root)
 %doc README UPGRADING AUTHORS NEWS doc/mpdconf.example doc/*.urpmi
 %{_bindir}/%{name}
 %{_mandir}/man1/*
