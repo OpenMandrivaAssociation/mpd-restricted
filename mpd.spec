@@ -13,8 +13,8 @@
 
 Name:		mpd
 Version:	0.17.2
-Release:	1
-Summary:	, the Music Player Daemon
+Release:	2
+Summary:	The Music Player Daemon
 License:	GPLv2+
 Group:		Sound
 Url:		http://mpd.wikia.com/
