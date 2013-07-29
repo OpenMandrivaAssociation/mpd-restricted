@@ -11,10 +11,10 @@
 %define extrarelsuffix plf
 %endif
 
+Summary:	The Music Player Daemon
 Name:		mpd
 Version:	0.17.2
 Release:	2
-Summary:	The Music Player Daemon
 License:	GPLv2+
 Group:		Sound
 Url:		http://mpd.wikia.com/
@@ -25,31 +25,28 @@ Source3:	%{name}.logrotate
 Source4:	README.urpmi
 Source5:	%{name}.service
 
-Requires(pre):		rpm-helper
-Requires(post):		rpm-helper
-Requires(preun):	rpm-helper
-Requires(postun):	rpm-helper
+BuildRequires:	avahi-common-devel
+BuildRequires:	libatomic_ops-devel
+BuildRequires:	libmikmod-devel
+BuildRequires:	libmpcdec-devel
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(ao)
-BuildRequires:	libatomic_ops-devel
 BuildRequires:	pkgconfig(audiofile)
-BuildRequires:	avahi-common-devel
-BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(flac)
 BuildRequires:	pkgconfig(flac++)
 BuildRequires:	pkgconfig(id3tag)
 BuildRequires:	pkgconfig(jack)
-BuildRequires:	pkgconfig(mad)
-BuildRequires:	libmikmod-devel
-BuildRequires:	libmpcdec-devel
-BuildRequires:	pkgconfig(ogg)
+BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(libpulse)
+BuildRequires:	pkgconfig(mad)
+BuildRequires:	pkgconfig(ogg)
 BuildRequires:	pkgconfig(shout)
-BuildRequires:	pkgconfig(vorbis)
 BuildRequires:	pkgconfig(sqlite3)
+BuildRequires:	pkgconfig(vorbis)
 %if %{build_plf}
-BuildRequires:	libfaad2-devel
+BuildRequires:	faad2-devel
 %endif
+Requires(pre,post,preun,postun):	rpm-helper
 
 %description
 Music Player Daemon (MPD) allows remote access for playing music (MP3, Ogg
@@ -140,3 +137,4 @@ fi
 %ghost /var/log/mpd/mpd.log
 %ghost /var/log/mpd/mpd.error
 %attr(644,root,root) /lib/systemd/system/%{name}.service
+
