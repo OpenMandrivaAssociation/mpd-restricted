@@ -13,12 +13,12 @@
 
 Summary:	The Music Player Daemon
 Name:		mpd
-Version:	0.17.2
-Release:	2%{?extrarelsuffix}
+Version:	0.17.5
+Release:	1%{?extrarelsuffix}
 License:	GPLv2+
 Group:		Sound
 Url:		http://mpd.wikia.com/
-Source0:	http://downloads.sourceforge.net/musicpd/%{name}-%{version}.tar.gz
+Source0:	https://distfiles.macports.org/mpd/%{name}-%{version}.tar.xz
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}.logrotate
