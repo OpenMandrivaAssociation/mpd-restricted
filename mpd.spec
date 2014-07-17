@@ -164,7 +164,7 @@ install -D -m 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 install -m 644 %{SOURCE4} doc/README.urpmi
 rm -rf %{buildroot}/%{_docdir}/mpd
 
-install -p -D -m 0644 %{SOURCE3} %{buildroot}%{_prefix}/lib/tmpfiles.d/mpd.conf
+install -p -D -m 0644 %{SOURCE3} %{buildroot}%{_tmpfilesdir}/mpd.conf
 
 %pre
 %_pre_useradd %{name} %{_localstatedir}/lib/%{name} /bin/false
@@ -195,7 +195,7 @@ fi
 %{_bindir}/%{name}
 %{_mandir}/man1/*
 %{_mandir}/man5/*
-%{_libdir}/tmpfiles.d/*
+%{_tmpfilesdir}*
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %attr(-,mpd,root) %config(noreplace) %{_sysconfdir}/%{name}.conf
 %defattr(644,mpd,audio)
