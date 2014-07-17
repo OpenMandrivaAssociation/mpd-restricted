@@ -1,0 +1,21 @@
+--- Makefile.in.0001	2014-02-20 09:59:55.842154200 +0100
++++ Makefile.in	2014-02-20 10:00:28.325319079 +0100
+@@ -2731,7 +2731,7 @@
+ 	$(YAJL_CFLAGS) \
+ 	$(patsubst -I%/FLAC,-I%,$(FLAC_CFLAGS))
+ 
+-PLAYLIST_LIBS = libplaylist_plugins.a $(FLAC_LIBS) $(am__append_70)
++PLAYLIST_LIBS = libplaylist_plugins.a -lvorbis $(FLAC_LIBS) $(am__append_70)
+ 
+ #
+ # Filter plugins
+--- Makefile.am.0001	2014-02-20 09:59:55.826154611 +0100
++++ Makefile.am	2014-02-20 10:00:20.287525733 +0100
+@@ -982,6 +982,7 @@
+ 
+ PLAYLIST_LIBS = \
+ 	libplaylist_plugins.a \
++	-lvorbis \
+ 	$(FLAC_LIBS)
+ 
+ if ENABLE_DESPOTIFY

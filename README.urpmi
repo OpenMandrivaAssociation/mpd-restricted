@@ -10,7 +10,7 @@ If you use passwords, please change permissions of this file to 600
 (passwords are in clear plain text).
 
 If you DON'T want MPD to start at boot (to let users have different
-configuration, for example), just disable the service via the Mandrake Control
+configuration, for example), just disable the service via the Mandriva Control
 Center, or by running "chkconfig --del mpd" as root.
 
 
