@@ -12,6 +12,7 @@
 %endif
 
 Summary:	MPD, the Music Player Daemon
+
 Name:		mpd
 Version:	0.18.10
 Release:	1%{?extrarelsuffix}
@@ -164,7 +165,7 @@ install -D -m 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 install -m 644 %{SOURCE4} doc/README.urpmi
 rm -rf %{buildroot}/%{_docdir}/mpd
 
-install -p -D -m 0644 %{SOURCE3} %{buildroot}%{_tmpfilesdir}/mpd.conf
+install -p -D -m 0644 %{SOURCE2} %{buildroot}%{_tmpfilesdir}/mpd.conf
 
 %pre
 %_pre_useradd %{name} %{_localstatedir}/lib/%{name} /bin/false
@@ -209,16 +210,3 @@ fi
 %ghost /var/log/mpd/mpd.log
 %ghost /var/log/mpd/mpd.error
 %attr(644,root,root) /lib/systemd/system/%{name}.service
-
-%changelog
-* Fri Mar 28 2014 Giovanni Mariani <mc2374@mclink.it> 0.18.9-2
-- Fixed typo in configure making the package wrongly depend upon lame
-  library (in Restricted)
-
-* Sat Mar 22 2014 Giovanni Mariani <mc2374@mclink.it> 0.18.9-1
-- New release 0.18.9
-- Updated Source0 and URL tags
-- Taken P0 from Mageia
-- Updated BReqs list to enable more format support (from Mageia)
-  and enabled them in the configure options
-- Added S100 to silence many (useless or wrong) rpmlint warnings
