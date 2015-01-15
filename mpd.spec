@@ -44,14 +44,12 @@ BuildRequires:	pkgconfig(fluidsynth) >= 1.1
 BuildRequires:	pkgconfig(libmms) >= 0.4
 BuildRequires:	pkgconfig(openal)
 # multimedia formats
-BuildRequires:	pkgconfig(adplug)
 BuildRequires:	pkgconfig(ao)
 BuildRequires:	pkgconfig(audiofile) >= 0.3
 BuildRequires:	pkgconfig(flac) >= 1.2
 BuildRequires:	pkgconfig(flac++)
 BuildRequires:	pkgconfig(id3tag)
 BuildRequires:	pkgconfig(libcdio_paranoia)
-BuildRequires:	pkgconfig(libffado)
 BuildRequires:	pkgconfig(libiso9660)
 BuildRequires:	pkgconfig(libmodplug)
 BuildRequires:	pkgconfig(libmpg123)
