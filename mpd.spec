@@ -186,7 +186,7 @@ then
 fi
 
 %files
-%doc README UPGRADING AUTHORS NEWS doc/mpdconf.example
+%doc README AUTHORS NEWS doc/mpdconf.example
 %{_bindir}/%{name}
 %{_mandir}/man1/*
 %{_mandir}/man5/*
