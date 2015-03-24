@@ -205,5 +205,5 @@ fi
 %ghost /var/log/mpd/mpd.log
 %ghost /var/log/mpd/mpd.error
 %{_presetdir}/86-mpd.preset
-%attr(644,root,root) /lib/systemd/system/%{name}.service
-%attr(644,root,root) /lib/systemd/system/%{name}.socket
+%attr(644,root,root) %{_unitdir}/%{name}.service
+%attr(644,root,root) %{_unitdir}/%{name}.socket
