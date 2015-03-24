@@ -1,5 +1,3 @@
-removed_sources:
-  mpd-0.17.2.tar.gz: d12802cfb7b3cec839cbe1ad39f7c1533feaf171
-  mpd-0.18.9.tar.xz: 70e96857d68c0191bbf721aa08a8b5f4ec8120c7
+---
 sources:
-  mpd-0.18.10.tar.xz: 0923318cfda033bb4f89c219e6effa9d5b330c1d
+  mpd-0.19.9.tar.xz: 6683bee5f132eda318c5a61ec14b2df8d9164d60

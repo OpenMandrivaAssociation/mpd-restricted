@@ -14,8 +14,8 @@
 Summary:	MPD, the Music Player Daemon
 
 Name:		mpd
-Version:	0.18.10
-Release:	2%{?extrarelsuffix}
+Version:	0.19.9
+Release:	1%{?extrarelsuffix}
 License:	GPLv2+
 Group:		Sound
 Url:		http://www.musicpd.org/
@@ -23,18 +23,17 @@ Source0:	http://www.musicpd.org/download/%{name}/%{name}-%{version}.tar.xz
 Source1:	%{name}.conf
 Source2:        %{name}.tmpfiles.d
 Source3:	%{name}.logrotate
-Source4:	README.urpmi
 Source100:	%{name}.rpmlintrc
-Patch0:		mpd-0.18.8-libvorbis.patch
 
 Requires(pre,post):	rpm-helper
-Requires(preun,postun): rpm-helper
+Requires(preun,postun):	rpm-helper
 BuildRequires:	pkgconfig(sqlite3)
 BuildRequires:	pkgconfig(atomic_ops)
 BuildRequires:	pkgconfig(libsystemd-daemon)
 BuildRequires:	pkgconfig(glib-2.0) >= 2.28
 BuildRequires:	pkgconfig(gthread-2.0)
 BuildRequires:	avahi-common-devel
+BuildRequires:	boost-devel
 BuildRequires:	pkgconfig(libcurl) >= 7.18
 # sound servers
 BuildRequires:	pkgconfig(alsa) >= 0.9.0
@@ -56,6 +55,7 @@ BuildRequires:	pkgconfig(libmpg123)
 BuildRequires:	pkgconfig(libsidplay2)
 BuildRequires:	pkgconfig(libsidutils)
 BuildRequires:	pkgconfig(libsoup-2.4)
+BuildRequires:	libmp4v2-devel
 BuildRequires:	pkgconfig(mad)
 BuildRequires:	pkgconfig(ogg)
 BuildRequires:	pkgconfig(opus)
@@ -99,7 +99,7 @@ autoreconf -vfi
 
 %build
 # Mad and sidplay option make the build to fail
-%configure2_5x \
+%configure \
 	--with-systemdsystemunitdir=%{_unitdir} \
 	--with-zeroconf=auto \
 	--enable-alsa \
@@ -139,6 +139,7 @@ autoreconf -vfi
 %if !%{build_plf}
 	--disable-aac \
 	--disable-lame-encoder \
+	--disable-mp4v2 \
 %endif
 	--enable-sqlite
 %make
@@ -147,50 +148,43 @@ autoreconf -vfi
 %install
 %makeinstall_std
 
-mkdir -p %{buildroot}/var/lib/mpd
-touch %{buildroot}/%{_localstatedir}/lib/mpd/mpd.db
-touch %{buildroot}/%{_localstatedir}/lib/mpd/mpdstate
-mkdir -p %{buildroot}/var/log/mpd
-touch %{buildroot}/var/log/mpd/mpd.log
-touch %{buildroot}/var/log/mpd/mpd.error
-mkdir -p %{buildroot}/var/run/mpd
-mkdir -p %{buildroot}/%{_localstatedir}/lib/mpd/playlists
-mkdir -p %{buildroot}/%{_localstatedir}/lib/mpd/music
+mkdir -p %{buildroot}%{_localstatedir}/lib/mpd
+touch %{buildroot}%{_localstatedir}/lib/mpd/mpd.db
+touch %{buildroot}%{_localstatedir}/lib/mpd/mpdstate
+mkdir -p %{buildroot}%{_localstatedir}/log/mpd
+touch %{buildroot}%{_localstatedir}/log/mpd/mpd.log
+touch %{buildroot}%{_localstatedir}/log/mpd/mpd.error
+mkdir -p %{buildroot}%{_localstatedir}/run/mpd
+mkdir -p %{buildroot}%{_localstatedir}/lib/mpd/playlists
+mkdir -p %{buildroot}%{_localstatedir}/lib/mpd/music
 mkdir -p %{buildroot}/lib/systemd/system
 
 install -D -m 644 %{SOURCE1} %{buildroot}/etc/mpd.conf
 install -D -m 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
-install -m 644 %{SOURCE4} doc/README.urpmi
 rm -rf %{buildroot}/%{_docdir}/mpd
 
 install -p -D -m 0644 %{SOURCE2} %{buildroot}%{_tmpfilesdir}/mpd.conf
 
+install -d %{buildroot}%{_presetdir}
+cat > %{buildroot}%{_presetdir}/86-mpd.preset << EOF
+enable mpd.service
+EOF
+
 %pre
 %_pre_useradd %{name} %{_localstatedir}/lib/%{name} /bin/false
 usermod -g audio %{name}
-
 
 %post
 if [ $1 -eq 1 ]
 then
 %create_ghostfile %{_localstatedir}/lib/mpd/mpd.db mpd audio 644
 %create_ghostfile %{_localstatedir}/lib/mpd/mpdstate mpd audio 644
-%create_ghostfile /var/log/mpd/mpd.log mpd audio 644
-%create_ghostfile /var/log/mpd/mpd.error mpd audio 644
+%create_ghostfile %{_localstatedir}/log/mpd/mpd.log mpd audio 644
+%create_ghostfile %{_localstatedir}/log/mpd/mpd.error mpd audio 644
 fi
-%_post_service %{name}
-
-
-%preun
-%_preun_service %{name}
-
-
-%postun
-%_postun_userdel %{name}
-
 
 %files
-%doc README UPGRADING AUTHORS NEWS doc/mpdconf.example doc/*.urpmi
+%doc README UPGRADING AUTHORS NEWS doc/mpdconf.example
 %{_bindir}/%{name}
 %{_mandir}/man1/*
 %{_mandir}/man5/*
@@ -207,4 +201,5 @@ fi
 %attr(755,mpd,audio) %dir /var/run/mpd
 %ghost /var/log/mpd/mpd.log
 %ghost /var/log/mpd/mpd.error
+%{_presetdir}/86-mpd.preset
 %attr(644,root,root) /lib/systemd/system/%{name}.service
