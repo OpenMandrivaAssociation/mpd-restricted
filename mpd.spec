@@ -33,6 +33,8 @@ BuildRequires:	pkgconfig(libsystemd-daemon)
 BuildRequires:	pkgconfig(glib-2.0) >= 2.28
 BuildRequires:	pkgconfig(gthread-2.0)
 BuildRequires:	avahi-common-devel
+BuildRequires:	pkgconfig(avahi-client)
+BuildRequires:	pkgconfig(avahi-glib)
 BuildRequires:	boost-devel
 BuildRequires:	pkgconfig(libcurl) >= 7.18
 # sound servers
@@ -55,6 +57,7 @@ BuildRequires:	pkgconfig(libmpg123)
 BuildRequires:	pkgconfig(libsidplay2)
 BuildRequires:	pkgconfig(libsidutils)
 BuildRequires:	pkgconfig(libsoup-2.4)
+BuildRequires:	pkgconfig(libupnp)
 BuildRequires:	libmp4v2-devel
 BuildRequires:	pkgconfig(mad)
 BuildRequires:	pkgconfig(ogg)
@@ -167,7 +170,7 @@ install -p -D -m 0644 %{SOURCE2} %{buildroot}%{_tmpfilesdir}/mpd.conf
 
 install -d %{buildroot}%{_presetdir}
 cat > %{buildroot}%{_presetdir}/86-mpd.preset << EOF
-enable mpd.service
+enable mpd.socket
 EOF
 
 %pre
@@ -203,3 +206,4 @@ fi
 %ghost /var/log/mpd/mpd.error
 %{_presetdir}/86-mpd.preset
 %attr(644,root,root) /lib/systemd/system/%{name}.service
+%attr(644,root,root) /lib/systemd/system/%{name}.socket
