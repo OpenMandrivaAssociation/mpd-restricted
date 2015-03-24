@@ -96,7 +96,6 @@ of libfaad2, which is patent-protected.
 
 %prep
 %setup -q
-%patch0 -b .vorbis
 autoreconf -vfi
 
 
