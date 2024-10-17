@@ -18,7 +18,7 @@ Version:	0.19.9
 Release:	2%{?extrarelsuffix}
 License:	GPLv2+
 Group:		Sound
-Url:		http://www.musicpd.org/
+Url:		https://www.musicpd.org/
 Source0:	http://www.musicpd.org/download/%{name}/%{name}-%{version}.tar.xz
 Source1:	%{name}.conf
 Source2:        %{name}.tmpfiles.d
