@@ -1,11 +1,14 @@
-# The systemd stuff goes in "/lib/systemd": hence
-# this error message is wrong
-addFilter("E: hardcoded-library-path")
+# The systemd stuff goes in "/lib/systemd": hence this error message is wrong
+#addFilter("E: hardcoded-library-path")
+# ... and also this warning
+#addFilter("W: only-non-binary-in-usr-lib")
+
+# There is the same systemd unit file in user and system locations
+addFilter("W: files-duplicate")
 
 # False positive: mpd wants an user and a group named "mpd"
 addFilter("W: non-standard-uid")
 addFilter("W: non-standard-gid")
 
-# False positive: this one is the init.d script for mpd
-# and is rightly executable even if in /etc/init.d
-addFilter("E: executable-marked-as-config-file")
+# The dir is writable only by the above user and group
+addFilter("E: logrotate-user-writable-log-dir")

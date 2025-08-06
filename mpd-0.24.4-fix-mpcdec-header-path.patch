@@ -1,0 +1,12 @@
+diff -rupN mpd-0.24.4.old/src/decoder/plugins/MpcdecDecoderPlugin.cxx mpd-0.24.4/src/decoder/plugins/MpcdecDecoderPlugin.cxx
+--- mpd-0.24.4.old/src/decoder/plugins/MpcdecDecoderPlugin.cxx	2025-05-20 09:57:41.000000000 +0200
++++ mpd-0.24.4/src/decoder/plugins/MpcdecDecoderPlugin.cxx	2025-06-10 18:35:13.778112803 +0200
+@@ -12,7 +12,7 @@
+ #include "util/ScopeExit.hxx"
+ #include "Log.hxx"
+ 
+-#include <mpc/mpcdec.h>
++#include <mpcdec/mpcdec.h>
+ 
+ #include <cmath>
+ #include <iterator>
